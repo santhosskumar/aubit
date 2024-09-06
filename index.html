@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUBIT</title>
+    <style>
+      body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #logo {
+            height: 40px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-right: 10px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page {
+            display: none; /* Pages are hidden by default */
+        }
+
+        #home {
+            display: block; /* Display home page by default */
+        }
+
+        #hero {
+            position: relative;
+            width: 100%;
+            height: 100vh; /* Use full viewport height */
+            overflow: hidden;
+        }
+
+        .gallery-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .gallery-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 5px;
+            text-align: center;
+            font-size: 14px;
+            border-radius: 3px;
+        }
+        .bottom-container {
+         
+            background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent black background */
+            color: #fff; /* White text color */
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10; /* Ensure it appears above the slides */
+            text-align: center;
+            max-width: 90%;
+            border-radius: 8px;
+        }
+
+        h2 {
+            border-bottom: 2px solid #fff;
+            padding-bottom: 10px;
+        }
+
+        pre {
+            text-align: left;
+            background: transparent;
+            padding: 10px;
+            overflow: auto;
+            margin: 0;
+            color: #fff;
+        }
+        details {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #f4f4f4;
+        }
+
+        summary {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        fieldset {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        legend {
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+      
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            color: white;
+        }
+
+        .success-overlay .checkmark {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .success-overlay .checkmark::before {
+            content: '✔';
+            font-size: 50px;
+            color: white;
+        }
+
+        .success-overlay .message {
+            font-size: 24px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="Your Logo" id="logo">
+        <nav>
+            <ul>
+                <li><a href="#home" onclick="showPage('home')">Home</a></li>
+                <li><a href="#courses" onclick="showPage('courses')">Courses</a></li>
+                <li><a href="#enquiry" onclick="showPage('enquiry')">Enquiry</a></li>
+                <li><a href="#contact" onclick="showPage('contact')">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="page">
+            <div id="hero">
+                <!-- Slides -->
+                <div class="gallery-slide" id="slide1">
+                    <img src="main-block.jpg" alt="Main Block">
+                    <div class="gallery-caption">Main Block</div>
+                </div>
+                <div class="gallery-slide" id="slide2">
+                    <img src="b-block.jpg" alt="B Block">
+                    <div class="gallery-caption">B Block</div>
+                </div>
+                <div class="gallery-slide" id="slide3">
+                    <img src="c-block.jpg" alt="C Block">
+                    <div class="gallery-caption">C Block</div>
+                </div>
+                <div class="gallery-slide" id="slide4">
+                    <img src="boys-hostel.jpg" alt="Boys Hostel">
+                    <div class="gallery-caption">Boys Hostel</div>
+                </div>
+                <div class="gallery-slide" id="slide5">
+                    <img src="girls-hostel.jpg" alt="Girls Hostel">
+                    <div class="gallery-caption">Girls Hostel</div>
+                </div>
+                <div class="gallery-slide" id="slide6">
+                    <img src="playground.jpg" alt="Playground">
+                    <div class="gallery-caption">Playground</div>
+                </div>
+            </div>
+              <!-- Bottom Container for History -->
+            <div class="bottom-container" id="home-bottom-container">
+                <h2>History</h2>
+                <h4>Anna University Chennai – Regional Office, Tiruchirappalli</h4> 
+                <h3>Timeline of University</h3>
+                <pre>
+1999–2007 – School of Engineering and Technology, Bharathidasan Institute of Technology (part of Bharathidasan University).
+2007–2010 – Anna University Tiruchirappalli.
+2010–2012 – Anna University of Technology Tiruchirappalli (Main Campus).
+2012–2013 – Bharathidasan Institute of Technology, Tiruchirappalli.
+2013 to present – Anna University Chennai- Regional Office Tiruchirappalli (BIT Campus).
+2013 to present - University College of Engineering, (BIT Campus), Anna University, Tiruchirappalli.
+                </pre>
+            </div>
+        </section>
+  <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(function (page) {
+                page.style.display = 'none'; // Hide all pages
+            });
+            document.getElementById(pageId).style.display = 'block'; // Show the selected page
+            
+            // Show the bottom container only on the home page
+            const homeBottomContainer = document.getElementById('home-bottom-container');
+            if (pageId === 'home') {
+                homeBottomContainer.style.display = 'block';
+            } else {
+                homeBottomContainer.style.display = 'none';
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.gallery-slide');
+            const totalSlides = slides.length;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.style.opacity = i === index ? '1' : '0';
+                });
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                showSlide(currentSlide);
+            }
+
+            showSlide(currentSlide);
+            setInterval(nextSlide, 3000);
+        });
+    </script>
+
+        <section id="courses" class="page" style="display: none;">
+            <h2>Course Syllabus and Fees Structure</h2>
+        <details>
+                <summary>Mechanical Engineering</summary>
+                <p>Mechanical Engineering provides an in-depth study of following.</p>
+<h1>Topics</h1>
+<ul>
+  <li>Thermodynamics</li>
+  <li>Fluid Mechanics</li>
+  <li>Strength of Materials</li>
+  <li>Manufacturing Processes</li>
+  <li>Heat Transfer</li>
+  <li>Machine Design</li>
+</ul>
+                <p>Duration: [4 years]</p>
+            </details>
+
+            <details>
+                <summary>Electrical Engineering</summary>
+                <p>Electrical Engineering covers advanced topics  of following.</p>
+<h1>Topics</h1>
+
+<ul>
+  <li>Circuit Theory</li>
+  <li>Power Systems</li>
+  <li>Control Systems</li>
+  <li>Electrical Machines</li>
+  <li>Digital Electronics</li>
+  <li>Signal Processing</li>
+
+</ul>
+                <p>Duration: [4 years]</p>
+            </details>
+             <details>
+                <summary>Civil Engineering</summary>
+                <p>Civil Engineering provides an in-depth study  of following.</p>
+<h1>Topics</h1>
+
+<ul>
+  <li>Structural Analysis</li>
+  <li>Geotechnical Engineering</li>
+  <li>Transportation Engineering</li>
+  <li>Hydraulics and Water Resources</li>
+  <li>Environmental Engineering</li>
+  <li> Construction Management</li>
+</ul>
+                <p>Duration: [4 years]</p>
+            </details>
+
+            <details>
+                <summary>Computer Science Engineering</summary>
+                <p>Computer Science Engineering covers advanced topics of following.</p>
+<h1>Topics</h1>
+
+<ul>
+  <li>Data Structures and Algorithms</li>
+  <li>Operating Systems</li>
+  <li>Database Management Systems</li>
+  <li> Computer Networks</li>
+  <li>Artificial Intelligence</li>
+  <li>Software Engineering</li>
+</ul>
+                <p>Duration: [4 years]</p>
+            </details>
+            <details>
+                <summary>Electronics and Communication Engineering</summary>
+                <p>Electronics and Communication Engineering provides an in-depth study of following.</p>
+<h1>Topics</h1>
+
+<ul>
+  <li>Analog and Digital Communication</li>
+  <li>Microprocessors and Microcontrollers</li>
+  <li>VLSI Design</li>
+  <li>Embedded Systems</li>
+  <li>Wireless Communication</li>
+  <li>Signal Processing</li>
+</ul>
+                <p>Duration: [4 years]</p>
+            </details>
+
+            <details>
+                <summary>Biomedical Engineering</summary>
+                <p>Biomedical Engineering covers advanced topics  of following.</p>
+<h1>Topics</h1>
+
+<ul>
+   <li>Biomedical Instrumentation</li>
+  <li>Medical Imaging</li>
+  <li>Biomaterials</li>
+  <li>Biomechanics</li>
+  <li>Medical Device Design</li>
+  <li> Tissue Engineering</li>
+</ul>
+                <p>Duration: [4 years]</p>
+            </details>
+        
+
+            <h3>Fees Structure</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Fees</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mechanical Engineering</td>
+                        <td>150000 rupees only</td>
+                    </tr>
+                    <tr>
+                        <td>Electrical Engineering</td>
+                        <td>150000 rupees only</td>
+                    </tr>
+                     <tr>
+                        <td>Civil Engineering</td>
+                        <td>150000 rupees only</td>
+                    </tr>
+                    <tr>
+                        <td>Computer Science Engineering</td>
+                        <td>150000 rupees only</td>
+                    </tr>
+                    <tr>
+                        <td>Electronics and Communication Engineering</td>
+                        <td>150000 rupees only</td>
+                    </tr>
+                    <tr>
+                        <td>Biomedical Engineering</td>
+                        <td>150000 rupees only</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="enquiry" class="page" style="display: none;">
+            <h2>Enquiry Form</h2>
+            <form id="enquiryForm">
+            <form action="/action_page.php">
+                <fieldset>
+                    <legend>FILL THE BELOW DETIALS</legend>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" required>
+
+                    <label for="course">Chosen Course:</label>
+                    <select id="course" name="course" required>
+                        <option value="">Select a course</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        <option value="Electrical Engineering">Electrical Engineering</option>
+                        <option value="Civil Engineering">Civil Engineering</option>
+                        <option value="Computer Science Engineering">Computer Science Engineering</option>
+                        <option value="Electronics and Communication Engineering">Electronics and Communication Engineering</option>
+                        <option value="Biomedical Engineering">Biomedical Engineering</option>
+
+                    </select>
+                    <br><br>
+
+                    <input type="submit" value="Submit">
+                    <div id="successMessage" style="display: none; color: green; margin-top: 10px;">Successfully Submitted!</div>
+
+                
+            </form>
+                </fieldset>
+            </form>
+        </section>
+
+        <section id="contact" class="page" style="display: none;">
+            <h2>Contact Us</h2>
+            <p>For more information about our college, please contact us at:</p>
+            <address>
+                <p>Email: aubit@gmail.com</p>
+                <p>Phone: +1-234-567-8900</p>
+                <h3>Address:</h3> <p>Bit Campus, 
+                 620 024.,
+                 Mandaiyur, 
+                 Tamil Nadu 620024, India.
+                 Phone: 0431 240 7946
+                 Email: kmtsenthil@gmail.com
+                 Affiliated to: Anna University, Chennai
+                 Aid Status: University Managed</p>
+            </address>
+            <!-- Google Maps Embed -->
+            <section id="location">
+                <h2>Our Location</h2>
+                <div id="map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62735.86966110907!2d78.74545056964593!3d10.657739684561795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3baa89337cba7f33%3A0x7120582d954fcb0f!2sAnna%20University%20RO%20Tiruchirappalli!5e0!3m2!1sen!2sin!4v1725136459019!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </section>
+        </section>
+    </main>
+ <!-- Success Overlay -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="checkmark"></div>
+        <div class="message">Successfully Submitted!</div>
+    </div>
+
+  <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(function(page) {
+                page.style.display = 'none';
+            });
+            document.getElementById(pageId).style.display = 'block';
+            
+            // Show watermark only on the home page
+            document.getElementById('watermark').style.display = pageId === 'home' ? 'block' : 'none';
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const enquiryForm = document.getElementById('enquiryForm');
+            const successOverlay = document.getElementById('successOverlay');
+
+            enquiryForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+
+                if (!name || !email || !phone) {
+                    alert('Please fill in all fields.');
+                    return; // Stop the function execution
+                }
+
+                // Show the success overlay
+                successOverlay.style.display = 'flex';
+
+                // Hide the success overlay after a few seconds
+                setTimeout(() => {
+                    successOverlay.style.display = 'none';
+                showPage('contact'); // Redirect to the contact page
+                }, 3000); // Hide after 3 seconds
+            });
+        });
+    </script>
+</body>
+</html>
